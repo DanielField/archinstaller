@@ -50,39 +50,39 @@ read desktopenv
 case "$desktopenv" in
         "1")
                 echo "Installing xfce4..."
-                pacstrap -i /mnt xfce4 xfce4-goodies
-                pacstrap -i /mnt lightdm lightdm-gtk-greeter
+                pacstrap /mnt xfce4 xfce4-goodies
+                pacstrap /mnt lightdm lightdm-gtk-greeter
                 arch-chroot /mnt systemctl enable lightdm
                 echo "Done."
         ;;
         "2")
                 echo "Installing gnome..."
-				pacstrap -i /mnt gnome gnome-extra gnome-tweaks firefox vlc
+				pacstrap /mnt gnome gnome-extra gnome-tweaks firefox vlc
 				arch-chroot /mnt systemctl enable gdm.service
                 echo "Done."
         ;;
         "3")
                 echo "Installing KDE Plasma..."
-				pacstrap -i /mnt plasma plasma-wayland-session kde-applications sddm
+				pacstrap /mnt plasma plasma-wayland-session kde-applications sddm
 				arch-chroot /mnt systemctl enable sddm.service
                 echo "Done."
         ;;
         "4")
                 echo "Installing Budgie..."
-				pacstrap -i /mnt budgie-desktop sddm gnome-terminal firefox vlc gnome-control-center nomacs
+				pacstrap /mnt budgie-desktop sddm gnome-terminal firefox vlc gnome-control-center nomacs
 				arch-chroot /mnt systemctl enable sddm.service
                 echo "Done."
         ;;
         "5")
                 echo "Installing Cinnamon..."
-				pacstrap -i /mnt cinnamon gnome-terminal
-				pacstrap -i /mnt lightdm lightdm-gtk-greeter
+				pacstrap /mnt cinnamon gnome-terminal
+				pacstrap /mnt lightdm lightdm-gtk-greeter
 				arch-chroot /mnt systemctl enable lightdm
                 echo "Done."
         ;;
         "6")
                 echo "Installing LXDE..."
-                pacstrap -i /mnt lxde lxdm leafpad network-manager-applet opera
+                pacstrap /mnt lxde lxdm leafpad network-manager-applet opera
                 arch-chroot /mnt systemctl enable lxdm.service
                 echo "Done."
         ;;
