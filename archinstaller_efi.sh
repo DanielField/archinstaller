@@ -107,7 +107,10 @@ arch-chroot /mnt /bin/bash << "EOT"
 echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
 EOT
 
-echo "Which CPU microcode would you like? "
+echo "Which CPU microcode would you like?"
+echo "1. intel-ucode"
+echo "2. amd-ucode"
+echo "3. Skip"
 read ucodepackage
 case "$ucodepackage" in
         "1")

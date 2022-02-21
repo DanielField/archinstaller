@@ -17,8 +17,7 @@ esac
 echo -e "\nChoose a video driver:"
 echo "1. NVIDIA"
 echo "2. AMD"
-echo "3. VMWare"
-echo "4. Skip video driver installation"
+echo "3. Skip video driver installation"
 
 read videodriver
 
@@ -29,10 +28,7 @@ case "$videodriver" in
         "2")
                 pacstrap /mnt xf86-video-amdgpu
         ;;
-        "3")
-                pacstrap /mnt xf86-video-vmware spice-vdagent
-        ;;
-		"4")
+		"3")
                 echo "Skipped video driver installation."
         ;;
 		*)
@@ -97,4 +93,18 @@ case "$desktopenv" in
                 echo "Invalid option."
                 echo "Skipped desktop environment installation."
         ;;
+esac
+
+read -p "Are you running QEMU/KVM and want to install the Spice agent (y/n)?" spice
+case "$spice" in 
+	y|Y) 
+			echo "Installing spice-vdagent..."
+			pacstrap /mnt spice-vdagent
+	;;
+	n|N) 
+			echo "Skipped spice installation."
+	;;
+	*) 
+			echo "invalid. Skipped."
+	;;
 esac
