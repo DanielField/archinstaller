@@ -24,13 +24,13 @@ read videodriver
 
 case "$videodriver" in
         "1")
-                pacstrap -i /mnt nvidia nvidia-utils
+                pacstrap /mnt nvidia nvidia-utils
         ;;
         "2")
-                pacstrap -i /mnt xf86-video-amdgpu
+                pacstrap /mnt xf86-video-amdgpu
         ;;
         "3")
-                pacstrap -i /mnt xf86-video-vmware spice-vdagent
+                pacstrap /mnt xf86-video-vmware spice-vdagent
         ;;
 		"4")
                 echo "Skipped video driver installation."

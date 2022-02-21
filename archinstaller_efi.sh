@@ -113,11 +113,23 @@ arch-chroot /mnt passwd $myusername
 arch-chroot /mnt /bin/bash <<"EOT"
 echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
 EOT
-arch-chroot /mnt nano /etc/sudoers
 
-echo "Which CPU microcode would you like? (type amd-ucode or intel-ucode)"
+echo "Which CPU microcode would you like? "
 read ucodepackage
-pacstrap /mnt $ucodepackage
+case "$ucodepackage" in
+        "1")
+                pacstrap /mnt intel-ucode
+        ;;
+        "2")
+                pacstrap /mnt amd-ucode
+        ;;
+		"3")
+                echo "Skipped CPU microcode installation."
+        ;;
+		*)
+                echo "Invalid. Skipped CPU microcode installation."
+        ;;
+esac
 arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
 
 echo "Installing yay and it's dependencies..."
