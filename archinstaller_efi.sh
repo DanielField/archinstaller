@@ -1,16 +1,16 @@
 #!/bin/bash
 
-timedatectl set-ntp true
+timedatectl set-ntp true 
 
 modprobe dm-crypt
 modprobe dm-mod
+
 echo "This script will now list the disks, please remember which one you want to partition."
 read -r -s -p $'Press enter to continue...'
 fdisk -l
 echo "Which disk would you like to partition? (e.g. /dev/sda)"
 read diskname
 echo "You will now be prompted to create your partitions."
-
 echo "For EFI mode, create these partitions:"
 echo "EFI (recommended 256MB)"
 echo "boot (recommended 512MB)"
@@ -65,19 +65,15 @@ echo "generating fstab..."
 genfstab -U /mnt >> /mnt/etc/fstab
 
 echo "Setting timezone..."
-arch-chroot /mnt /bin/bash <<"EOT"
+arch-chroot /mnt /bin/bash << "EOT"
 ln -sf /usr/share/zoneinfo/Australia/Brisbane /etc/localtime
 hwclock --systohc
-EOT
-
 echo "Setting locale to Australia..."
-arch-chroot /mnt /bin/bash <<"EOT"
 echo -e "en_AU.UTF-8 UTF-8\nen_AU ISO-8859-1" > /etc/locale.gen
 locale-gen
 echo 'LANG=en_AU.UTF-8' > /etc/locale.conf
 echo 'KEYMAP=US' > /etc/vconsole.conf
 EOT
-
 
 echo "What do you want your hostname to be?"
 read myhostname
@@ -90,9 +86,6 @@ echo "Setting up grub to work with LUKS..."
 arch-chroot /mnt sed -i "s/GRUB_CMDLINE_LINUX=\"\"/GRUB_CMDLINE_LINUX=\"cryptdevice=${rootpart//\//\\/}:luks_root\"/" /etc/default/grub
 
 echo "Generating initramfs..."
-#echo "REMEMBER: add encrypt to this line like so:"
-#echo "HOOKS=(base udev autodetect modconf block encrypt filesystems keyboard fsck)"
-#read -r -s -p $'Press enter to continue...'
 arch-chroot /mnt sed -i "s/HOOKS=(base udev autodetect modconf block filesystems keyboard fsck)/HOOKS=(base udev autodetect modconf block encrypt filesystems keyboard fsck)/" /etc/mkinitcpio.conf
 arch-chroot /mnt mkinitcpio -P
 
@@ -110,7 +103,7 @@ read myusername
 arch-chroot /mnt useradd -m -G wheel $myusername
 arch-chroot /mnt passwd $myusername
 
-arch-chroot /mnt /bin/bash <<"EOT"
+arch-chroot /mnt /bin/bash << "EOT"
 echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
 EOT
 
@@ -134,7 +127,7 @@ arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
 
 echo "Installing yay and it's dependencies..."
 pacstrap /mnt go
-arch-chroot /mnt /bin/bash <<"EOT"
+arch-chroot /mnt /bin/bash << "EOT"
 useradd -m tempuser
 su tempuser
 cd ~
