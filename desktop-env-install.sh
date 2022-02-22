@@ -97,6 +97,17 @@ case "$desktopenv" in
         "8")
                 echo "Skipped desktop environment installation."
         ;;
+		"9")
+				echo "Installing Pantheon..."
+				pacstrap /mnt pantheon lightdm-pantheon-greeter sound-theme-elementary switchboard lightdm-gtk-greeter elementary-icon-theme elementary-wallpapers pantheon-applications-menu wingpanel-indicator-session wingpanel-indicator-datetime
+				arch-chroot /mnt useradd -m tempuser	
+				arch-chroot /mnt su tempuser -c "yay -S pantheon-session-git gnome-settings-daemon-elementary pantheon-default-settings switchboard-plug-pantheon-tweaks-git urutau-icons-git pantheon-dock-git"
+				arch-chroot /mnt userdel tempuser
+				arch-chroot /mnt rm -rf /home/tempuser
+				pacstrap /mnt lightdm
+				arch-chroot /mnt systemctl enable lightdm
+				echo "Done."
+		;;
         *)
                 echo "Invalid option."
                 echo "Skipped desktop environment installation."
