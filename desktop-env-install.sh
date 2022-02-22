@@ -44,8 +44,7 @@ echo "4. Budgie"
 echo "5. Cinnamon"
 echo "6. LXDE"
 echo "7. MATE"
-echo "8. Xmonad"
-echo "9. No desktop environment (skips this step)"
+echo "8. No desktop environment (skips this step)"
 
 read desktopenv
 
@@ -96,13 +95,6 @@ case "$desktopenv" in
                 echo "Done."
         ;;
 		"8")
-				echo "Installing Xmonad..."
-				pacstrap /mnt xmonad xmonad-contrib xmonad-utils xmobar
-				pacstrap /mnt lightdm lightdm-gtk-greeter
-                arch-chroot /mnt systemctl enable lightdm
-				echo "Done."
-		;;
-		"9")
                 echo "Skipped desktop environment installation."
         ;;
         *)
