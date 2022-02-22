@@ -37,13 +37,14 @@ case "$videodriver" in
 esac
 
 echo -e "\nChoose a desktop environment:"
-echo "1. XFCE4"
+echo "1. Xfce4"
 echo "2. GNOME"
 echo "3. KDE Plasma"
 echo "4. Budgie"
 echo "5. Cinnamon"
 echo "6. LXDE"
-echo "7. No desktop environment (skips this step)"
+echo "7. MATE"
+echo "8. No desktop environment (skips this step)"
 
 read desktopenv
 
@@ -82,11 +83,18 @@ case "$desktopenv" in
         ;;
         "6")
                 echo "Installing LXDE..."
-                pacstrap /mnt lxde lxdm leafpad network-manager-applet opera
+                pacstrap /mnt lxde lxdm leafpad network-manager-applet firefox
                 arch-chroot /mnt systemctl enable lxdm.service
                 echo "Done."
         ;;
-        "7")
+		"7")
+                echo "Installing MATE..."
+                pacstrap /mnt mate mate-extra firefox
+				pacstrap /mnt lightdm lightdm-gtk-greeter
+                arch-chroot /mnt systemctl enable lightdm
+                echo "Done."
+        ;;
+        "8")
                 echo "Skipped desktop environment installation."
         ;;
         *)
