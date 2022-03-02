@@ -82,9 +82,12 @@ case "$desktopenv" in
                 echo "Done."
         ;;
         "6")
-                echo "Installing LXDE..."
-                pacstrap /mnt lxde lxdm leafpad network-manager-applet firefox
-                arch-chroot /mnt systemctl enable lxdm.service
+                echo "Installing LXQT..."
+                pacstrap /mnt lxqt sddm oxygen-icons lxqt-panel leafpad network-manager-applet firefox
+                arch-chroot /mnt systemctl enable sddm.service
+				arch-chroot /mnt /bin/bash << "EOT"
+				echo "exec startlxqt" >> .xinitrc
+				EOT
                 echo "Done."
         ;;
 		"7")
