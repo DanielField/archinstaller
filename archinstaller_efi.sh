@@ -103,9 +103,7 @@ read myusername
 arch-chroot /mnt useradd -m -G wheel $myusername
 arch-chroot /mnt passwd $myusername
 
-arch-chroot /mnt /bin/bash << "EOT"
-echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
-EOT
+echo "%wheel ALL=(ALL) ALL" >> /mnt/etc/sudoers
 
 echo "Which CPU microcode would you like?"
 echo "1. intel-ucode"

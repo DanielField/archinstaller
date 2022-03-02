@@ -42,7 +42,7 @@ echo "2. GNOME"
 echo "3. KDE Plasma"
 echo "4. Budgie"
 echo "5. Cinnamon"
-echo "6. LXDE"
+echo "6. LXQT"
 echo "7. MATE"
 echo "8. No desktop environment (skips this step)"
 
@@ -58,7 +58,7 @@ case "$desktopenv" in
         ;;
         "2")
                 echo "Installing gnome..."
-				pacstrap /mnt gnome gnome-extra gnome-tweaks firefox vlc
+				pacstrap /mnt gnome gnome-extra gnome-tweaks
 				arch-chroot /mnt systemctl enable gdm.service
                 echo "Done."
         ;;
@@ -70,7 +70,7 @@ case "$desktopenv" in
         ;;
         "4")
                 echo "Installing Budgie..."
-				pacstrap /mnt budgie-desktop sddm gnome-terminal firefox vlc gnome-control-center nomacs
+				pacstrap /mnt budgie-desktop sddm gnome-terminal gnome-control-center nomacs
 				arch-chroot /mnt systemctl enable sddm.service
                 echo "Done."
         ;;
@@ -83,16 +83,13 @@ case "$desktopenv" in
         ;;
         "6")
                 echo "Installing LXQT..."
-                pacstrap /mnt lxqt sddm oxygen-icons lxqt-panel leafpad network-manager-applet firefox
+                pacstrap /mnt lxqt sddm oxygen-icons lxqt-panel network-manager-applet
                 arch-chroot /mnt systemctl enable sddm.service
-				arch-chroot /mnt /bin/bash << "EOT"
-				echo "exec startlxqt" >> .xinitrc
-				EOT
                 echo "Done."
         ;;
 		"7")
                 echo "Installing MATE..."
-                pacstrap /mnt mate mate-extra firefox
+                pacstrap /mnt mate mate-extra
 				pacstrap /mnt lightdm lightdm-gtk-greeter
                 arch-chroot /mnt systemctl enable lightdm
                 echo "Done."
