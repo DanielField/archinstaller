@@ -114,8 +114,6 @@ echo 'LANG=en_AU.UTF-8' > /etc/locale.conf
 echo 'KEYMAP=US' > /etc/vconsole.conf
 EOT
 
-echo "What do you want your hostname to be?"
-#read myhostname
 arch-chroot /mnt /bin/bash -c "echo $myhostname > /etc/hostname"
 arch-chroot /mnt rm /etc/hosts
 arch-chroot /mnt touch /etc/hosts
