@@ -7,6 +7,10 @@ modprobe dm-mod
 
 fdisk -l
 read -p "Which device do you want to partition? " TGTDEV
+read -p "Enter a hostname for your system: " myhostname
+read -s -p "Create a root password: " rootpassword
+read -p "What would you like your username to be? " myusername
+read -s -p "Create a password for $myusername: " mypassword
 
 sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | fdisk ${TGTDEV}
   g # create GPT partition table
@@ -88,7 +92,7 @@ echo 'KEYMAP=US' > /etc/vconsole.conf
 EOT
 
 echo "What do you want your hostname to be?"
-read myhostname
+#read myhostname
 arch-chroot /mnt /bin/bash -c "echo $myhostname > /etc/hostname"
 arch-chroot /mnt rm /etc/hosts
 arch-chroot /mnt touch /etc/hosts
@@ -102,18 +106,17 @@ arch-chroot /mnt sed -i "s/HOOKS=(base udev autodetect modconf block filesystems
 arch-chroot /mnt mkinitcpio -P
 
 echo "Set the root password:"
-arch-chroot /mnt passwd
+echo "root":$rootpassword | arch-chroot /mnt chpasswd
+
+echo "Making a new user..."
+echo "Enter a new username:"
+arch-chroot /mnt useradd -m -G wheel $myusername
+echo $myusername:$mypassword | arch-chroot /mnt chpasswd
 
 echo "Setting up grub..."
 arch-chroot /mnt grub-install --boot-directory=/boot --efi-directory=/boot/efi $bootpart
 arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
 arch-chroot /mnt grub-mkconfig -o /boot/efi/EFI/arch/grub.cfg
-
-echo "Making a new user..."
-echo "Enter a new username:"
-read myusername
-arch-chroot /mnt useradd -m -G wheel $myusername
-arch-chroot /mnt passwd $myusername
 
 echo "%wheel ALL=(ALL) ALL" >> /mnt/etc/sudoers
 
