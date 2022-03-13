@@ -141,6 +141,12 @@ userdel tempuser
 rm -rf /home/tempuser
 EOT
 
+# Enable multilib
+sed -i "/\[multilib\]/,/Include/"'s/^#//' /mnt/etc/pacman.conf
+
+# Enable parallel downloads
+sed -i "s/#ParallelDownloads = 5/ParallelDownloads = 5/" /mnt/etc/pacman.conf
+
 pacman --noconfirm -S archlinux-keyring
 
 ./desktop-env-install.sh

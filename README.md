@@ -1,5 +1,5 @@
 # archinstaller
-Just made this for convenience. It's nothing special, but it saves me time. Many improvements could be made.
+Arch Linux automated install script.
 
 ## Installation Steps
 1. Type `pacman -Sy`
