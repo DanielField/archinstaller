@@ -5,30 +5,42 @@ timedatectl set-ntp true
 modprobe dm-crypt
 modprobe dm-mod
 
-echo "This script will now list the disks, please remember which one you want to partition."
-read -r -s -p $'Press enter to continue...'
 fdisk -l
-echo "Which disk would you like to partition? (e.g. /dev/sda)"
-read diskname
-echo "You will now be prompted to create your partitions."
-echo "For EFI mode, create these partitions:"
-echo "EFI (recommended 256MB)"
-echo "boot (recommended 512MB)"
-echo "root (remaining space on drive)"
+read -p "Which device do you want to partition? " TGTDEV
 
-read -r -s -p $'Press enter to continue...'
-
-cfdisk $diskname
+sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | fdisk ${TGTDEV}
+  g # create GPT partition table
+  n # new partition
+  1 # partition number 1
+    # default - start at beginning of disk 
+  +512M # 512 MB efi parttion
+  t # set partition type
+  1 # set the type to EFI
+  n # new partition
+  2 # partition number 2
+    # default 
+  +512M # 512 MB boot parttion
+  n # new partition
+  3 # partion number 3
+    # default, start immediately after preceding partition 
+    # default, extend partition to end of disk 
+  p # print the in-memory partition table
+  w # write the partition table
+EOF
 
 echo "Finished creating partitions!"
-echo "listing disks again..."
 fdisk -l
-echo "What is the EFI partition (e.g. /dev/sda1)? "
-read efipart
-echo "What is the boot partition? (e.g. /dev/sda2)? "
-read bootpart
-echo "What is the root partition? (e.g. /dev/sda3)? "
-read rootpart
+
+if [[ "$TGTDEV" == *"nvme"* ]]; then
+	efipart=$TGTDEV"p1"
+	bootpart=$TGTDEV"p2"
+	rootpart=$TGTDEV"p3"
+else
+	efipart=$TGTDEV"1"
+	bootpart=$TGTDEV"2"
+	rootpart=$TGTDEV"3"
+fi
+
 echo "EFI partition = $efipart, boot partition = $bootpart, root partition = $rootpart"
 
 echo "Setting up encryption with luksFormat..."
