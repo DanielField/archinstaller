@@ -11,9 +11,9 @@ read -p "Enter a hostname for your system: " myhostname
 read -p "Which kernel(s) would you like? (if multiple, separate with spaces. e.g. linux linux-lts) " kernelpackage
 read -p "How big would you like your swap file (in MB)? " swapsize
 read -s -p "Create a root password: " rootpassword
-read -p "\nWhat would you like your username to be? " myusername
+read -p $'\n'"What would you like your username to be? " myusername
 read -s -p "Create a password for $myusername: " mypassword
-echo "\nWhich CPU microcode would you like?"
+echo -e "\nWhich CPU microcode would you like?"
 echo "1. intel-ucode"
 echo "2. amd-ucode"
 echo "3. Skip"
