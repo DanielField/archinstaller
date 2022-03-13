@@ -90,6 +90,9 @@ mkswap /mnt/swap
 swapon /mnt/swap
 chmod 0600 /mnt/swap
 
+# Enable parallel downloads in the installer
+sed -i "s/#ParallelDownloads = 5/ParallelDownloads = 5/" /etc/pacman.conf
+
 echo "Installing packages..."
 pacman -Syy
 pacstrap /mnt base base-devel efibootmgr grub $kernelpackage linux-firmware networkmanager sudo vi vim bash-completion nano wget ufw git pulseaudio pavucontrol network-manager-applet archlinux-keyring
