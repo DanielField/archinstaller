@@ -1,6 +1,6 @@
 # archinstaller
 Arch Linux automated install script. **Do not run this script if you want to dual boot on the same drive. This script will erase everything on your drive.**
-This installer will automatically create your partitions. It will have three partitions: EFI (512MB), boot (512MB), and root (remaining space). Feel free to modify the script if you do not like this. :)
+This installer will automatically create your partitions. It will have three partitions: EFI (512MB), boot (512MB), and root (remaining space). The timezone and locale is currently hard-coded for Brisbane Australia in the script. Feel free to modify the script if you do not like this. :)
 
 ## Installation Steps
 1. Type `pacman -Syy`
