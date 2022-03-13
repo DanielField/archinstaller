@@ -3,8 +3,11 @@
 # Enable multilib
 sudo sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 
+# Enable parrallel downloads
+sudo sed -i "s/#ParallelDownloads = 5/ParallelDownloads = 5/" /etc/pacman.conf
+
 # Update everything and install archlinux-keyring
-sudo pacman -Syu
+sudo pacman -Syyu
 sudo pacman -S archlinux-keyring
 
 # Install packages (including AUR packages)
