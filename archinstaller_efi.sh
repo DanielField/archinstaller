@@ -59,7 +59,8 @@ EOF
 echo "Finished creating partitions!"
 fdisk -l
 
-if [[ "$TGTDEV" == *"nvme"* ]]; then
+if [[ "$TGTDEV" == *"nvme"* || "$TGTDEV" == *"mmcblk"* ]]
+then
 	efipart=$TGTDEV"p1"
 	bootpart=$TGTDEV"p2"
 	rootpart=$TGTDEV"p3"
@@ -95,7 +96,7 @@ sed -i "s/#ParallelDownloads = 5/ParallelDownloads = 5/" /etc/pacman.conf
 
 echo "Installing packages..."
 pacman -Syy
-pacstrap /mnt base base-devel efibootmgr grub $kernelpackage linux-firmware networkmanager sudo vi vim bash-completion nano wget ufw git pulseaudio pavucontrol network-manager-applet archlinux-keyring
+pacstrap /mnt base base-devel efibootmgr grub $kernelpackage linux-firmware networkmanager sudo vi vim bash-completion nano wget ufw git pulseaudio pavucontrol gvfs network-manager-applet archlinux-keyring
 arch-chroot /mnt systemctl enable NetworkManager.service
 arch-chroot /mnt systemctl enable ufw
 arch-chroot /mnt ufw enable
