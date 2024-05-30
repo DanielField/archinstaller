@@ -254,9 +254,6 @@ echo "Setting up grub..."
 arch-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
 arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
 
-read -n 1 -s -r -p "Press any key to continue"
-
-
 echo "Set the root password:"
 echo "root":$rootpassword | arch-chroot /mnt chpasswd
 unset rootpassword
