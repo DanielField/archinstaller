@@ -213,7 +213,7 @@ else
 fi
 
 # Add lvm2 to HOOKS in mkinitcpio.conf
-arch-chroot /mnt /bin/bash -c "sed -i 's/^HOOKS=(\(.*\)block/\1block lvm2/' /etc/mkinitcpio.conf"
+arch-chroot /mnt /bin/bash -c "sed -i '/^HOOKS=/ s/block/block lvm2/' /etc/mkinitcpio.conf"
 
 # Regenerate initramfs
 arch-chroot /mnt mkinitcpio -P
