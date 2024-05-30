@@ -212,6 +212,12 @@ else
     chmod 0600 /mnt/swap
 fi
 
+# Add lvm2 to HOOKS in mkinitcpio.conf
+arch-chroot /mnt /bin/bash -c "sed -i 's/^HOOKS=(\(.*\)block/\1block lvm2/' /etc/mkinitcpio.conf"
+
+# Regenerate initramfs
+arch-chroot /mnt mkinitcpio -P
+
 # Enable parallel downloads in the installer
 sed -i "s/#ParallelDownloads = 5/ParallelDownloads = 5/" /etc/pacman.conf
 
@@ -441,4 +447,3 @@ for package in "${selected_packages[@]}"; do
 done
 
 echo -e "\n\nArch has been installed, reboot when you are ready. Have fun!"
-
