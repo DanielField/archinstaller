@@ -124,6 +124,22 @@ clear
 KEYMAP=$(dialog --title "Keymap Selection" --inputbox "Enter your keymap:" 8 40 "us" 3>&1 1>&2 2>&3 3>&-)
 clear
 
+# Optional packages installation
+optional_packages=$(dialog --title "Optional Packages Installation" --checklist "Select additional packages to install:" 20 70 12 \
+1 "Firefox" off \
+2 "Chromium" off \
+3 "Google Chrome" off \
+4 "Vim" off \
+5 "Emacs" off \
+6 "Nano" off \
+7 "Steam" off \
+8 "Wine" off \
+9 "Lutris" off \
+10 "VLC Media Player" off \
+11 "MPV Media Player" off \
+12 "Neofetch" off 3>&1 1>&2 2>&3 3>&-)
+clear
+
 # Function to round to the nearest power of two
 round_to_nearest_power_of_two() {
     local x=$1
@@ -215,7 +231,7 @@ fi
 pacstrap /mnt lvm2
 
 # Add lvm2 to HOOKS in mkinitcpio.conf
-arch-chroot /mnt /bin/bash -c "sed -i '/^HOOKS=/ s/block/block lvm2/' /etc/mkinitcpio.conf"
+sed -i '/^HOOKS=/ s/block/block lvm2/' /mnt/etc/mkinitcpio.conf
 
 # Regenerate initramfs
 arch-chroot /mnt mkinitcpio -P
@@ -408,22 +424,6 @@ case "$machine_type" in
 			echo "Invalid option. No specific agent installed."
 	;;
 esac
-
-# Optional packages installation
-optional_packages=$(dialog --title "Optional Packages Installation" --checklist "Select additional packages to install:" 20 70 12 \
-1 "Firefox" off \
-2 "Chromium" off \
-3 "Google Chrome" off \
-4 "Vim" off \
-5 "Emacs" off \
-6 "Nano" off \
-7 "Steam" off \
-8 "Wine" off \
-9 "Lutris" off \
-10 "VLC Media Player" off \
-11 "MPV Media Player" off \
-12 "Neofetch" off 3>&1 1>&2 2>&3 3>&-)
-clear
 
 # Install selected optional packages
 IFS=' ' read -r -a selected_packages <<< "$optional_packages"
