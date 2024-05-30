@@ -241,6 +241,9 @@ arch-chroot /mnt rm /etc/hosts
 arch-chroot /mnt touch /etc/hosts
 arch-chroot /mnt /bin/bash -c "echo -e \"127.0.0.1 localhost\n::1 localhost\n127.0.1.1 $myhostname.localdomain $myhostname\" > /etc/hosts"
 
+# Bind mount the EFI partition inside the chroot environment
+mount --bind /mnt/boot/efi /mnt/boot/efi
+
 echo "Setting up grub..."
 arch-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
 arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
