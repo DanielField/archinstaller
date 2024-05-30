@@ -246,6 +246,9 @@ arch-chroot /mnt grub-install --boot-directory=/boot --efi-directory=/boot/efi $
 arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
 arch-chroot /mnt grub-mkconfig -o /boot/efi/EFI/arch/grub.cfg
 
+read -n 1 -s -r -p "Press any key to continue"
+
+
 echo "Set the root password:"
 echo "root":$rootpassword | arch-chroot /mnt chpasswd
 unset rootpassword
@@ -401,7 +404,7 @@ case "$machine_type" in
 esac
 
 # Optional packages installation
-optional_packages=$(dialog --title "Optional Packages Installation" --checklist "Select additional packages to install:" 20 70 13 \
+optional_packages=$(dialog --title "Optional Packages Installation" --checklist "Select additional packages to install:" 20 70 12 \
 1 "Firefox" off \
 2 "Chromium" off \
 3 "Google Chrome" off \
@@ -410,11 +413,10 @@ optional_packages=$(dialog --title "Optional Packages Installation" --checklist 
 6 "Nano" off \
 7 "Steam" off \
 8 "Wine" off \
-9 "Proton" off \
-10 "Lutris" off \
-11 "VLC Media Player" off \
-12 "MPV Media Player" off \
-13 "Neofetch" off 3>&1 1>&2 2>&3 3>&-)
+9 "Lutris" off \
+10 "VLC Media Player" off \
+11 "MPV Media Player" off \
+12 "Neofetch" off 3>&1 1>&2 2>&3 3>&-)
 clear
 
 # Install selected optional packages
@@ -429,13 +431,11 @@ for package in "${selected_packages[@]}"; do
         6) pacstrap /mnt nano ;;
         7) pacstrap /mnt steam ;;
         8) pacstrap /mnt wine ;;
-        9) pacstrap /mnt proton ;;
-        10) pacstrap /mnt lutris ;;
-        11) pacstrap /mnt vlc ;;
-        12) pacstrap /mnt mpv ;;
-        13) pacstrap /mnt neofetch ;;
+        9) pacstrap /mnt lutris ;;
+        10) pacstrap /mnt vlc ;;
+        11) pacstrap /mnt mpv ;;
+        12) pacstrap /mnt neofetch ;;
     esac
 done
 
 echo -e "\n\nArch has been installed, reboot when you are ready. Have fun!"
-
