@@ -179,7 +179,7 @@ fi
 
 echo "EFI partition = $efipart, boot partition = $bootpart, root partition = $rootpart"
 
-mkfs.vfat -n "EFI" $efipart
+mkfs.vfat -F32 -n "EFI" $efipart
 mkfs.ext4 -L boot $bootpart
 
 if [[ "$use_lvm" == "y" || "$use_lvm" == "Y" ]]
@@ -198,7 +198,7 @@ fi
 
 mkdir /mnt/boot
 mount $bootpart /mnt/boot
-mkdir /mnt/boot/efi
+mkdir -p /mnt/boot/efi
 mount $efipart /mnt/boot/efi
 
 if [[ "$use_lvm" == "y" || "$use_lvm" == "Y" ]]
@@ -242,9 +242,8 @@ arch-chroot /mnt touch /etc/hosts
 arch-chroot /mnt /bin/bash -c "echo -e \"127.0.0.1 localhost\n::1 localhost\n127.0.1.1 $myhostname.localdomain $myhostname\" > /etc/hosts"
 
 echo "Setting up grub..."
-arch-chroot /mnt grub-install --boot-directory=/boot --efi-directory=/boot/efi $bootpart
+arch-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
 arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
-arch-chroot /mnt grub-mkconfig -o /boot/efi/EFI/arch/grub.cfg
 
 read -n 1 -s -r -p "Press any key to continue"
 
@@ -439,3 +438,4 @@ for package in "${selected_packages[@]}"; do
 done
 
 echo -e "\n\nArch has been installed, reboot when you are ready. Have fun!"
+
